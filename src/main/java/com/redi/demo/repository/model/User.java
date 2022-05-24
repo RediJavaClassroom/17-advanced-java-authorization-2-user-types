@@ -5,12 +5,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -22,14 +20,25 @@ public class User implements UserDetails {
   private String passwordHash;
   @ElementCollection(targetClass = String.class)
   private Collection<String> authorities;
+  private String userType;
+
+  @OneToMany(mappedBy = "email", fetch = FetchType.LAZY)
+  private List<ShortLinkEntity> shortlinks;
 
   protected User() {}
 
-  public User(String email, String name, String passwordHash, Collection<String> authorities) {
+  public User(
+          String email,
+          String name,
+          String passwordHash,
+          Collection<String> authorities,
+          String userType
+  ) {
     this.email = email;
     this.name = name;
     this.passwordHash = passwordHash;
     this.authorities = authorities;
+    this.userType = userType;
   }
 
   public String getEmail() {

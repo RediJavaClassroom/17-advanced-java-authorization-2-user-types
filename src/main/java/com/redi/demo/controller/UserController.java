@@ -46,5 +46,4 @@ public class UserController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return userService.getUser(credentials.email);
     }
-
 }

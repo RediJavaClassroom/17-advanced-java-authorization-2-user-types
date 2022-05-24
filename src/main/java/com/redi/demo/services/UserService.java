@@ -1,6 +1,7 @@
 package com.redi.demo.services;
 
 import com.redi.demo.model.UserRegistration;
+import com.redi.demo.model.UserType;
 import com.redi.demo.repository.UserRepository;
 import com.redi.demo.repository.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,26 +34,41 @@ public class UserService {
     private static final Map<String, Collection<String>> USER_ROLES =
             Map.ofEntries(
                     Map.entry("redi@redi.com", List.of("ROLE_ADMIN")),
-                    Map.entry("hisham@redi.com", List.of())
+                    Map.entry("varshatj@redi.com", List.of("ROLE_ADMIN"))
             );
 
     private static final String DEFAULT_ROLE = "ROLE_USER";
+    public static final String ROLE_BASIC_USER = "ROLE_BASIC_USER";
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final Map<UserType, String> userTypeToRoleMap;
 
     @Autowired
     public UserService(final UserRepository userRepository, final PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-    }
+        this.userTypeToRoleMap = new HashMap<>();
 
+        this.userTypeToRoleMap.put(UserType.BASIC, ROLE_BASIC_USER);
+        this.userTypeToRoleMap.put(UserType.FREE, "ROLE_FREE_USER");
+        this.userTypeToRoleMap.put(UserType.PREMIUM, "ROLE_PREMIUM_USER");
+    }
 
     public User createUser(final UserRegistration userRegistration) {
         final User user = new User(userRegistration.email,
                 userRegistration.name,
                 passwordEncoder.encode(userRegistration.password),
-                findAuthorities(userRegistration.email)
+                findAuthorities(
+                        this.userTypeToRoleMap
+                                .getOrDefault(
+                                        userRegistration.userType,
+                                        "ROLE_FREE_USER"
+                                ),
+                        userRegistration.email
+                ),
+                userRegistration.userType.name()
         );
         userRepository.save(user);
         return user;
@@ -65,7 +81,10 @@ public class UserService {
     /**
      * Return all the authorities (permissions) allowed for the user identified by the provided email
      */
-    private static Collection<String> findAuthorities(String email) {
+    private static Collection<String> findAuthorities(
+            String userTypeRole,
+            String email
+    ) {
         // Get all the roles for this user
         // {ROLE_A, ROLE_B}
         final Collection<String> roles = USER_ROLES.getOrDefault(email, List.of(DEFAULT_ROLE));
@@ -82,8 +101,8 @@ public class UserService {
 
         authorities.addAll(roles);
         authorities.addAll(permissions);
+        authorities.add(userTypeRole);
 
         return authorities;
     }
-
 }
