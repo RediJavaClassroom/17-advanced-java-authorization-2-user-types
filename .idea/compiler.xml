@@ -7,11 +7,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="demo" />
+        <module name="17-advanced-java-authorization-2-user-types" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="17-advanced-java-authorization-2-user-types" options="-parameters" />
       <module name="demo" options="-parameters" />
     </option>
   </component>

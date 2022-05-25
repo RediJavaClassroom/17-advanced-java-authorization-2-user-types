@@ -41,9 +41,14 @@ public class UserController {
     @PostMapping(path = "/login")
     @ResponseBody
     public User login(@RequestBody UserCredentials credentials) {
+        System.out.println("Authenticating " + credentials);
         final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 credentials.email, credentials.password));
+        System.out.println("authentication " + authentication);
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        System.out.println("Getting user " + credentials);
+
         return userService.getUser(credentials.email);
     }
 }

@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.security.SecureRandom;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -21,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login").anonymous()// only unauthenticated can log in
+                .antMatchers("/login").permitAll()// everybody can log in
                 .antMatchers(HttpMethod.POST, "/users").anonymous() //  only unauthenticated can sign up
                 .antMatchers(HttpMethod.GET, "/l/**").permitAll() // everybody can expand the link
                 .antMatchers(HttpMethod.GET, "/swagger/**").permitAll() // everybody can expand the link
