@@ -17,8 +17,7 @@
       <scope value="GLOBAL" />
       <destination value="FILE" />
       <format value="EXCEL" />
-      <charset value="windows-1252" />
-      <charset value="windows-1252" />
+      <charset value="UTF-8" />
     </export-instructions>
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -129,7 +128,7 @@
           <alternative-statement-delimiter value="" />
         </details>
         <object-filters hide-empty-schemas="false" hide-pseudo-columns="false">
-          <object-type-filter>
+          <object-type-filter use-master-settings="true">
             <object-type name="SCHEMA" enabled="true" />
             <object-type name="USER" enabled="true" />
             <object-type name="ROLE" enabled="true" />

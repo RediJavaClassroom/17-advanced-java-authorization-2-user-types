@@ -22,8 +22,8 @@ public class User implements UserDetails {
   private Collection<String> authorities;
   private String userType;
 
-  @OneToMany(mappedBy = "email", fetch = FetchType.LAZY)
-  private List<ShortLinkEntity> shortlinks;
+//  @OneToMany(mappedBy = "email", fetch = FetchType.LAZY)
+//  private List<ShortLinkEntity> shortlinks;
 
   protected User() {}
 

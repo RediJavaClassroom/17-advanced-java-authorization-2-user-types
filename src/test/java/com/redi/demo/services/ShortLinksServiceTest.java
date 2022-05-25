@@ -31,6 +31,6 @@ class ShortLinksServiceTest {
         final CreateShortLinkRequest request = new CreateShortLinkRequest(URI.create("http://example.com"));
         final ShortLink shortLink = shortLinksService.createShortLink(request);
 
-        assertThat(shortLink.url.toString(), equalTo("http://localhost:8080/xxx"));
+        assertThat(shortLink.url.toString(), equalTo("http://localhost:8080/l/xxx"));
     }
 }

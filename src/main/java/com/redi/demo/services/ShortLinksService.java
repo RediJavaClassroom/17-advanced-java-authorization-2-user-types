@@ -33,7 +33,6 @@ public class ShortLinksService {
     return new ShortLink(uri);
   }
 
-  @PreAuthorize("hasAuthority('short-links.read')")
   public URI expandShortLink(final String key) {
     final ShortLinkEntity entity = repository.findByKey(key);
     return URI.create(entity.getOriginalUrl());
